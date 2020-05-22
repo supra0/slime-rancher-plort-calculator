@@ -16,6 +16,12 @@
 NOCOLOR='\033[0m'
 CAPVALS=(12 15 20 30 40 10000)
 
+if [[ $# != 2 ]]; then
+  echo "Incorrect number of arguments"
+  echo "Usage: ./plorts.sh <plort type> <number of plorts sold>"
+  exit 1;
+fi
+
 #convert arg1 to lowercase
 PLORT=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
@@ -71,8 +77,8 @@ elif [ "$PLORT" = "gold" ]; then
   CAP=${CAPVALS[5]}
   COLOR='\033[38;5;220m'
 else
-  echo "Invalid or no plort type entered. Terminating."
-  exit
+  echo "Invalid plort type entered. Terminating."
+  exit 1
 fi
 
 echo -e "${COLOR}Plorts${NOCOLOR} sold:" $2
@@ -80,7 +86,8 @@ echo -e "${COLOR}Plorts${NOCOLOR} sold:" $2
 ARG=$(echo "$CAP/$2" | bc -l)
 BASE=.75
 ANSWER=$(echo "l($ARG)/l($BASE)" | bc -l)
-echo "Days to return to cap:" $ANSWER
+echo "Days to return to plort cap:" $ANSWER
+
 ARG=$(echo "1/$2" | bc -l)
 ANSWER=$(echo "l($ARG)/l($BASE)" | bc -l)
 echo "Days to return to normal:" $ANSWER
